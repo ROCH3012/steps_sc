@@ -1,0 +1,41 @@
+•Configure basic ASA settings and interface security levels using CLI
+-----------------------------------------------------------------------------------------------------
+ciscoasa>en
+Password:ciscoenpa55
+ciscoasa>en
+Password:    (press enter no password here)
+ciscoasa#show version
+ciscoasa#show file system
+ciscoasa(config)#hostname CCNAS-ASA
+CCNAS-ASA(config)#domain-name ccnasecurity.com
+CCNAS-ASA(config)#enable password ciscoenpa55
+CCNAS-ASA(config)#clock set?
+CCNAS-ASA(config)#clock set 22:44:00 10 april 2019
+
+CCNAS-ASA(config)#interface vlan 1 
+CCNAS-ASA(config-if)#nameif inside
+CCNAS-ASA(config-if)#ip address 192.168.1.1 255.255.255.0 
+CCNAS-ASA(config-if)#security-level 100
+
+CCNAS-ASA(config-if)#interface vlan 2
+CCNAS-ASA(config-if)#nameif outside
+CCNAS-ASA(config-if)#ip address 209.165.200.226 255.255.255.248 
+CCNAS-ASA(config-if)#security-level 0
+
+CCNAS-ASA(config)#object network inside-net 
+CCNAS-ASA(config-network-object)#subnet 192.168.1.0 255.255.255.0 
+CCNAS-ASA(config-network-object)#nat (inside,outside) dynamic interface 
+CCNAS-ASA(config-network-object)#end
+
+CCNAS-ASA(config)# class-map inspection_default 
+CCNAS-ASA(config-cmap)#match default-inspection-traffic 
+CCNAS-ASA(config-cmap)# exit
+
+CCNAS-ASA(config)# policy-map global_policy 
+CCNAS-ASA(config-pmap)#class inspection_default 
+CCNAS-ASA(config-pmap-c)#inspect icmp 
+CCNAS-ASA(config-pmap-c)# exit
+
+CCNAS-ASA(config)# service-policy global_policy global
+
+b.From PC-B, attempt to ping the R1 

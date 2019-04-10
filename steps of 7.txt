@@ -1,0 +1,51 @@
+• Assign the Central switch as the root bridge.
+-------------------------------------------------------------------	
+Central(config)# spanning-tree vlan 1 root primary
+SW-1(config)# spanning-tree vlan 1 root secondary
+Central# show spanning-tree
+
+•Secure spanning-tree parameters to prevent STP manipulation attacks.
+----------------------------------------------------------------------------------------------------------
+SW-A(config)# interface range f0/1 - 4
+SW-A(config-if-range)# spanning-tree portfast
+
+SW-B(config)# interface range f0/1 - 4 
+SW-B(config-if-range)# spanning-tree portfast
+
+SW-A(config)# interface range f0/1 - 4 
+SW-A(config-if-range)# spanning-tree bpduguard enable
+
+SW-B(config)# interface range f0/1 - 4 
+SW-B(config-if-range)# spanning-tree bpduguard enable
+
+SW-1(config)# interface range f0/23 - 24 
+SW-1(config-if-range)# spanning-tree guard root
+
+SW-2(config)# interface range f0/23 - 24 
+SW-2(config-if-range)# spanning-tree guard root
+
+•Enable port security to prevent CAM table overflow attacks.
+----------------------------------------------------------------------------------------
+SW-A(config)# interface range f0/1 - 22
+SW-A(config-if-range)# switchport mode access
+SW-A(config-if-range)# switchport port-security
+SW-A(config-if-range)# switchport port-security maximum 2
+SW-A(config-if-range)# switchport port-security violation shutdown SW-A(config-if-range)# switchport port-security mac-address sticky
+
+SW-B(config)# interface range f0/1 - 22
+SW-B(config-if-range)# switchport mode access
+SW-B(config-if-range)# switchport port-security
+SW-B(config-if-range)# switchport port-security maximum 2
+SW-B(config-if-range)# switchport port-security violation shutdown
+SW-B(config-if-range)# switchport port-security mac-address sticky
+
+SW-A# show port-security interface f0/1
+SW-A(config)# interface range f0/5 - 22
+SW-A(config-if-range)# shutdown
+
+SW-B(config)# interface range f0/5 - 22
+SW-B(config-if-range)# shutdown
+
+
+
+

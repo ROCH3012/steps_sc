@@ -1,0 +1,61 @@
+•Configure OSPF MD5 authentication.
+------------------------------------------------------
+R1(config)# router ospf 1
+R1(config-router)# area 0 authentication message-digest
+
+R2(config)# router ospf 1
+R2(config-router)# area 0 authentication message-digest
+
+R3(config)# router ospf 1
+R3(config-router)# area 0 authentication message-digest
+
+R1(config)# interface s0/0/0
+R1(config-if)# ip ospf message-digest-key 1 md5 MD5pa55
+
+R2(config)# interface s0/0/0 
+R2(config-if)# ip ospf message-digest-key 1 md5 MD5pa55 
+
+R2(config-if)# interface s0/0/1 
+R2(config-if)# ip ospf message-digest-key 1 md5 MD5pa55
+
+R3(config)# interface s0/0/1 
+R3(config-if)# ip ospf message-digest-key 1 md5 MD5pa55
+
+•Configure NTP.
+-----------------------
+R1(config)# ntp server 192.168.1.5
+R2(config)# ntp server 192.168.1.5
+R3(config)# ntp server 192.168.1.5
+
+R1(config)# ntp update-calendar
+R2(config)# ntp update-calendar
+R3(config)# ntp update-calendar
+
+R1(config)# ntp authenticate
+R1(config)# ntp trusted-key 1
+R1(config)# ntp authentication-key 1 md5 NTPpa55
+
+R2(config)# ntp authenticate
+R2(config)# ntp trusted-key 1
+R2(config)# ntp authentication-key 1 md5 NTPpa55
+
+R3(config)# ntp authenticate
+R3(config)# ntp trusted-key 1
+R3(config)# ntp authentication-key 1 md5 NTPpa55
+
+R1(config)# service timestamps log datetime msec
+R2(config)# service timestamps log datetime msec
+R3(config)# service timestamps log datetime msec
+
+•Configure routers to log messages to the syslog server.
+-----------------------------------------------------------------------------------
+R1(config)# logging host 192.168.1.6
+R2(config)# logging host 192.168.1.6
+R3(config)# logging host 192.168.1.6
+
+
+
+
+
+
+

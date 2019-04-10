@@ -1,0 +1,15 @@
+- Configure, apply and verify  ACL that will block HTTP and HTTPS access on R1
+-----------------------------------------------------------------------------------------------------------------
+R1>en
+R1#config t
+R1(config)#ipv6 access-list BLOCK_HTTP
+R1(config-ipv6-acl)#deny tcp any host 2001:DB8:1:30::30 eq www
+R1(config-ipv6-acl)#deny tcp any host 2001:DB8:1:30::30 eq 443
+R1(config)# permit ipv6 any any
+R1(config)# interface GigabitEthernet0/1
+R1(config-if)# ipv6 traffic-filter BLOCK_HTTP in
+
+•Open the web browser of PC1 to http://2001:DB8:1:30::30 or https://2001:DB8:1:30::30.
+ The website should appear.
+•Open the web browser of PC2 to http://2001:DB8:1:30::30 or https://2001:DB8:1:30::30.
+ The website should be blocked
